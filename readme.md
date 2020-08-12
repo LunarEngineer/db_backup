@@ -6,7 +6,7 @@ It uses the `mysqldump` utility to get the data and a python script to do all th
 
 ## Caveats up Front
 
-This needs to be on the same network as your database. If your database is being run in a Docker container, like mine, then you simply need to put this container on the same network. More to follow in the detailed instructions.
+This needs to be on the same network as your database, if your database is being run in a Docker container, like mine. You simply need to put this container on the same network. More to follow in the detailed instructions.
 
 There are better ways that `mysqldump`. I don't care. This works.
 
