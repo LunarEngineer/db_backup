@@ -135,7 +135,7 @@ docker run -it --rm \
     --ip_host db \
     --db_user steve \
     --password steves_password \
-    --databases list of databases \
+    --databases 'list of databases' \
     --port_remote 22 \
     --user_remote curious_consumer \
     --dir_remote backups \
