@@ -122,6 +122,10 @@ I am also mounting the local directory where I want to store backups into /backu
 I connect it to the network that my database is running on. Since the network is built in a Docker Compose file and the database is hostnamed to db, I can simply use 'db' in the --ip_host argument.
 
 ```
+git clone https://github.com/LunarEngineer/db_backup.git && \
+
+cd db_backup && \
+
 docker build . -t db_backup:1.0 && \
 
 docker run -it --rm \
