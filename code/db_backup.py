@@ -252,37 +252,36 @@ class db_bkp():
             information including which daily, weekly, and monthly
             backups exist and which will get pruned.
         """
-        if not self._skip_local:
-            # Where am I dumping this?
-            # TODO: Instead of writing to three separate files
-            #   create one and copy it.
-            # 1. Do the daily
-            f_daily = os.path.join(self._dir_local,f"DAILY_{self._filename}")
-            if debug: print(f"\tWriting local file: {f_daily}")
-            with open(f_daily,'w') as f:
+        # Where am I dumping this?
+        # TODO: Instead of writing to three separate files
+        #   create one and copy it.
+        # 1. Do the daily
+        f_daily = os.path.join(self._dir_local,f"DAILY_{self._filename}")
+        if debug: print(f"\tWriting local file: {f_daily}")
+        with open(f_daily,'w') as f:
+            f.writelines(self.stdout)
+        # 2. Do the weekly
+        if self._make_weekly:
+            f_weekly = os.path.join(self._dir_local,f"WEEKLY_{self._filename}")
+            if debug: print(f"\tWriting local file: {f_weekly}")
+            with open(f_weekly,'w') as f:
                 f.writelines(self.stdout)
-            # 2. Do the weekly
-            if self._make_weekly:
-                f_weekly = os.path.join(self._dir_local,f"WEEKLY_{self._filename}")
-                if debug: print(f"\tWriting local file: {f_weekly}")
-                with open(f_weekly,'w') as f:
-                    f.writelines(self.stdout)
-            # 3. Do the monthly
-            if self._make_monthly:
-                f_monthly = os.path.join(self._dir_local,f"MONTHLY_{self._filename}")
-                if debug: print(f"\tWriting local file: {f_monthly}")
-                with open(f_monthly,'w') as f:
-                    f.writelines(self.stdout)
-            # Dig into the local filestructure and clean it up
-            self.manage_files(os.listdir(self._dir_local))
-            # Finally clean up anything in the drop list.
-            while self._drop_list:
-                fl = self._drop_list.pop()
-                fl = os.path.join(self._dir_local,fl)
-                if debug: print(f"\t\tRemoving {fl}")
-                os.remove(fl)
-            if debug:
-                self.manage_files(os.listdir(self._dir_local),debug)
+        # 3. Do the monthly
+        if self._make_monthly:
+            f_monthly = os.path.join(self._dir_local,f"MONTHLY_{self._filename}")
+            if debug: print(f"\tWriting local file: {f_monthly}")
+            with open(f_monthly,'w') as f:
+                f.writelines(self.stdout)
+        # Dig into the local filestructure and clean it up
+        self.manage_files(os.listdir(self._dir_local))
+        # Finally clean up anything in the drop list.
+        while self._drop_list:
+            fl = self._drop_list.pop()
+            fl = os.path.join(self._dir_local,fl)
+            if debug: print(f"\t\tRemoving {fl}")
+            os.remove(fl)
+        if debug:
+            self.manage_files(os.listdir(self._dir_local),debug)
 
 
     def dump_remote(self,debug:bool=False):
