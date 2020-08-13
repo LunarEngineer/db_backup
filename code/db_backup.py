@@ -51,10 +51,6 @@ __DEFAULT_PROPERTIES__ = {
         'default': 'all',
         'nargs': '?'
     },
-    'SKIP_LOCAL': {
-        'help': 'A boolean that can be used to skip a local dump.',
-        'default': False
-    },
     'DIR_LOCAL': {
         'help': 'A local directory to create a copy into.',
         'default': '/backups'
@@ -177,7 +173,6 @@ class db_bkp():
         \tDatabase User:                {self._db_user}
         \tDatabase Password Passed:     {self._password is not None}
         \tDatabases:                    {self._databases}
-        \tSkip Local:                   {self._skip_local}
         \tDump File Name:               *_{self._filename}
         \tLocal Directory:              {self._dir_local}
         \tSkip Remote:                  {self._skip_remote}
@@ -321,23 +316,31 @@ class db_bkp():
                 )
             # Open a secure file transfer protocol channel object
             sftp = client.open_sftp()
+            # Get the local file
             # 1. Do the daily
-            f_daily = os.path.join(self._dir_remote,f"DAILY_{self._filename}")
-            if debug: print(f"\tWriting remote file: {f_daily}")
-            with sftp.open(f_daily,'w') as f:
-                f.writelines(self.stdout)
+            f_daily_l = os.path.join(self._dir_local,f"DAILY_{self._filename}")
+            f_daily_r = os.path.join(self._dir_remote,f"DAILY_{self._filename}")
+            if debug: print(f"\tWriting remote file: {f_daily_r}")
+            try:
+                sftp.put(f_daily_l, f_daily_r)
+            except:
+                raise Exception("Unable to copy daily backup.")
             # 2. Do the weekly
-            if self._make_weekly:
-                f_weekly = os.path.join(self._dir_remote,f"WEEKLY_{self._filename}")
-                if debug: print(f"\tWriting remote file: {f_weekly}")
-                with sftp.open(f_weekly,'w') as f:
-                    f.writelines(self.stdout)
+            f_weekly_l = os.path.join(self._dir_local,f"WEEKLY_{self._filename}")
+            f_weekly_r = os.path.join(self._dir_remote,f"WEEKLY_{self._filename}")
+            if debug: print(f"\tWriting remote file: {f_weekly_r}")
+            try:
+                sftp.put(f_weekly_l, f_weekly_r)
+            except:
+                raise Exception("Unable to copy weekly backup.")
             # 3. Do the monthly
-            if self._make_monthly:
-                f_monthly = os.path.join(self._dir_remote,f"MONTHLY_{self._filename}")
-                if debug: print(f"\tWriting remote file: {f_monthly}")
-                with sftp.open(f_monthly,'w') as f:
-                    f.writelines(self.stdout)
+            f_monthly_l = os.path.join(self._dir_local,f"MONTHLY_{self._filename}")
+            f_monthly_r = os.path.join(self._dir_remote,f"MONTHLY_{self._filename}")
+            if debug: print(f"\tWriting remote file: {f_monthly_r}")
+            try:
+                sftp.put(f_monthly_l, f_monthly_r)
+            except:
+                raise Exception("Unable to copy monthly backup.")
             # Dig into the remote filestructure and clean it up
             self.manage_files(sftp.listdir(self._dir_remote))
             # Finally clean up anything in the drop list.
