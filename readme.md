@@ -8,7 +8,7 @@ It uses the `mysqldump` utility to get the data and a python script to do all th
 
 This needs to be on the same network as your database, if your database is being run in a Docker container, like mine. You simply need to put this container on the same network. More to follow in the detailed instructions.
 
-There are better ways that `mysqldump`. I don't care. This works.
+There are better ways than `mysqldump`. I don't care; it works and my time is extremely limited.
 
 To do local backups and have them persisted you need to mount a directory into /backups that you'll have access to later. Docker volume, bind mount, whatever.
 
@@ -42,7 +42,7 @@ There are a fair number of ways to run this thing but it boils down to three maj
 
 Please keep in mind that caching passwords in Docker containers is probably just **not a good idea**(TM).
 
-All of the variables below may be set via environment variables by including them as upper case versions, e.g. CREDENTIAL_FILE = some/silly/path, in the Dockerfile, or they may be called at runtime with something like `docker run db_backup:1.0 --credential_file "some/silly/path"`. Either way will work and passing things like **passwords** in via CLI is possible more secure, depending on your environment.
+All of the variables below may be set via environment variables by including them as upper case versions, e.g. CREDENTIAL_FILE = some/silly/path, in the Dockerfile, or they may be called at runtime with something like `docker run db_backup:1.0 --credential_file "some/silly/path"`. Either way will work and passing things like **passwords** in via CLI is possibly more secure, depending on your environment.
 
 ### DLY_BACKUP_COUNT
 
