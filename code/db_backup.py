@@ -325,21 +325,23 @@ class db_bkp():
             except:
                 raise Exception("Unable to copy daily backup.")
             # 2. Do the weekly
-            f_weekly_l = os.path.join(self._dir_local,f"WEEKLY_{self._filename}")
-            f_weekly_r = os.path.join(self._dir_remote,f"WEEKLY_{self._filename}")
-            if debug: print(f"\tWriting remote file: {f_weekly_r}")
-            try:
-                sftp.put(f_weekly_l, f_weekly_r)
-            except:
-                raise Exception("Unable to copy weekly backup.")
+            if self._make_weekly:
+                f_weekly_l = os.path.join(self._dir_local,f"WEEKLY_{self._filename}")
+                f_weekly_r = os.path.join(self._dir_remote,f"WEEKLY_{self._filename}")
+                if debug: print(f"\tWriting remote file: {f_weekly_r}")
+                try:
+                    sftp.put(f_weekly_l, f_weekly_r)
+                except:
+                    raise Exception("Unable to copy weekly backup.")
             # 3. Do the monthly
-            f_monthly_l = os.path.join(self._dir_local,f"MONTHLY_{self._filename}")
-            f_monthly_r = os.path.join(self._dir_remote,f"MONTHLY_{self._filename}")
-            if debug: print(f"\tWriting remote file: {f_monthly_r}")
-            try:
-                sftp.put(f_monthly_l, f_monthly_r)
-            except:
-                raise Exception("Unable to copy monthly backup.")
+            if self._make_monthly:
+                f_monthly_l = os.path.join(self._dir_local,f"MONTHLY_{self._filename}")
+                f_monthly_r = os.path.join(self._dir_remote,f"MONTHLY_{self._filename}")
+                if debug: print(f"\tWriting remote file: {f_monthly_r}")
+                try:
+                    sftp.put(f_monthly_l, f_monthly_r)
+                except:
+                    raise Exception("Unable to copy monthly backup.")
             # Dig into the remote filestructure and clean it up
             self.manage_files(sftp.listdir(self._dir_remote))
             # Finally clean up anything in the drop list.
