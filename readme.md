@@ -40,7 +40,7 @@ There are a fair number of ways to run this thing but it boils down to three maj
 2. Build this container with some environment variables set and pass the remainder in as CLI parameters.
 3. Pass everything in as CLI parameters at run time.
 
-Please keep in mind that caching passwords in Docker containers is probably just **not a good idea**$^{TM}$.
+Please keep in mind that caching passwords in Docker containers is probably just **not a good idea**(TM).
 
 All of the variables below may be set via environment variables by including them as upper case versions, e.g. CREDENTIAL_FILE = some/silly/path, in the Dockerfile, or they may be called at runtime with something like `docker run db_backup:1.0 --credential_file "some/silly/path"`. Either way will work and passing things like **passwords** in via CLI is possible more secure, depending on your environment.
 
