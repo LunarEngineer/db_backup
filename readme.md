@@ -12,7 +12,25 @@ There are better ways that `mysqldump`. I don't care. This works.
 
 To do local backups and have them persisted you need to mount a directory into /backups that you'll have access to later. Docker volume, bind mount, whatever.
 
-As for *automation* I will have an example of a crontab setup below.
+As for *automation*:
+
+In Linux this is as easy as adding the line `@daily backup_wow` to your [cron jobs](https://www.digitalocean.com/community/tutorials/how-to-use-cron-to-automate-tasks-ubuntu-1804). You can then edit your ~/.bashrc file and add the lines:
+
+```bash
+alias backup_wow="docker run -it --rm \
+    -v /some/folder/wow_backup/.ssh:/.ssh \
+    -v /some/folder/wow_backup/backups:/backups \
+    --network=really_awesome_docker_network db_backup:1.0 \
+    --ip_host db \
+    --db_user trinity \
+    --password trinity \
+    --databases 'auth world characters' \
+    --port_remote 22 \
+    --user_remote trinity \
+    --dir_remote backups \
+    --ip_remote strangeforeignland.ddns.net \
+    --credential_file id_rsa"
+```
 
 ## Levers and Dials
 
