@@ -81,11 +81,6 @@ All of the variables below may be set via environment variables by including the
 * Default Value: 'all'
 * Possible Values: 'all' works as a keyword, but otherwise pass specific database names. For me that means if I want to back up the world, character, and auth databases I need to pass 'world character auth'.
 
-### SKIP_LOCAL
-
-* Help String: A boolean that can be used to skip a local dump.
-* Default Value: False
-
 ### DIR_LOCAL
 
 * Help String: A local directory to create a copy into.
